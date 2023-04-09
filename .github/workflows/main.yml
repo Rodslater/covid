@@ -20,6 +20,7 @@ jobs:
     - name: Install packages
       run: |
         R -e 'install.packages("devtools")'
+        R -e 'install.packages("sf")'
         R -e 'devtools::install_version("covid19br", version = "0.1.4", repos = "http://cran.us.r-project.org", dependencies = TRUE)'
         R -e 'install.packages("dplyr")'
         R -e 'install.packages("readr")'
