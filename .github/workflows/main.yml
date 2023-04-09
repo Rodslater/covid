@@ -1,0 +1,42 @@
+# Covid
+name: Covid
+
+# Controls when the action will run.
+on:
+  push:
+    branches: main
+
+jobs: 
+  auto_covid:
+    # The type of runner that the job will run on
+    runs-on: macOS-11
+
+    # Load repo and install R
+    steps:
+    - uses: actions/checkout@v2
+    - uses: r-lib/actions/setup-r@v2
+
+    # Set-up R
+    - name: Install packages
+      run: |
+        R -e 'install.packages("devtools")'
+        R -e 'devtools::install_version("covid19br", version = "0.1.4", repos = "http://cran.us.r-project.org", dependencies = TRUE)'
+        R -e 'install.packages("dplyr")'
+        R -e 'install.packages("readr")'
+        
+        
+    # Run R script
+    - name: Script Covid
+      run: Rscript script_covid.R
+      
+ # Add new files in data folder, commit along with other modified files, push
+    - name: Commit files
+      run: |
+        git config --local user.name actions-user
+        git config --local user.email "actions@github.com"
+        git add data/*
+        git commit -am "GH ACTION Headlines $(date)"
+        git push origin main
+      env:
+        REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+        username: github-actions
