@@ -2,6 +2,7 @@ library(dplyr)
 library(readr)
 library(covid19br)
 
+memory.limit(24576)
 
 df <- covid19br::downloadCovid19(level = "state")
 df <- df %>% 
